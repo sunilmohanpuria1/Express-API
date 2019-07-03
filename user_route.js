@@ -8,10 +8,10 @@ router.get('/',(req,res)=>{
             include: [{
                 model: model.contact,
             }]
-        }
-    ).then(data => {
+        })
+        .then(data => {
         res.send(data);
-      });
+        });
 }); 
 
 router.get('/:user_id',(req,res)=>{
@@ -23,15 +23,15 @@ router.get('/:user_id',(req,res)=>{
             include: [{
                 model: model.contact,
             }]
-        }
-    ).then(data => {
-        if(data!==null)
-        {res.send(data);}
-        else{
-            res.sendStatus(404);
+        })
+        .then(data => {
+        if(data!==null){
+            res.send(data);
+        }else{
+            //res.sendStatus(404);
             res.send("User Not Found");
         }
-      });
+    });
 })
 
 
@@ -41,21 +41,25 @@ router.post('/',(req,res)=>{
             .then(token=>{
                 if(token!==null)
                 {
-                    model.contact.create({user_id:token.user_id,contactNo:req.body.contactNo,address:req.body.address}).then(()=>{
+                    model.contact.create({user_id:token.user_id,contactNo:req.body.contactNo,address:req.body.address})
+                    .then(()=>{
                         res.send("Data has enter with user id "+token.user_id);
-                    }).catch(function(err){
+                    })
+                    .catch(function(err){
                         //res.sendStatus(403);
                         res.send("Phone number already exist cannot create contact");
                     });
-                }
-            else{
-                model.User.create({firstName:req.body.firstName,lastName:req.body.lastName}).then((temp) => {
-                    model.contact.create({user_id:temp.user_id,contactNo:req.body.contactNo,address:req.body.address}).then(()=>{
+                }else{
+                    model.User.create({firstName:req.body.firstName,lastName:req.body.lastName})
+                    .then((temp) => {
+                        model.contact.create({user_id:temp.user_id,contactNo:req.body.contactNo,address:req.body.address})
+                        .then(()=>{
                         res.send("User already exist contacts updated " +temp.user_id);
-                     }).catch(function(err){
+                        })
+                        .catch(function(err){
                         //res.sendStatus(403);
                          res.send("Phone number already exist cannot create contact");
-                     })
+                        })
                     });
                 }
         })
@@ -67,12 +71,11 @@ router.delete('/:contact_id',(req,res)=>{
         .then(temp=>{
             if(temp!==null){
                 temp.destroy();
-                res.send("Contact deleted");}
-            else {
+                res.send("Contact deleted");
+            }else {
                 //res.sendStatus(404);
                 res.send("User Not Found cannot delete");
-            }
-            
+            }         
         })
 })
 
@@ -81,19 +84,18 @@ router.put('/:contact_id',(req,res)=>{
     .then((temp)=>{
         if(temp!==null){
             temp.update({contactNo:req.body.contactNo})
-             .then((data)=>{
+            .then((data)=>{
             res.send(data);
-        }).catch(function(err){
+            })
+            .catch(function(err){
             //res.sendStatus(403);
             res.send("Phone number already exist cannot update contact");
-        })
+            })
     }else{
        // res.sendStatus(404);
         res.send("Contact Not Found cannot delete");
      }
-
     })
 })
 
 module.exports = router;
-
