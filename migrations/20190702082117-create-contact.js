@@ -17,7 +17,7 @@ module.exports = {
       },
       contactNo:{
         type: Sequelize.BIGINT,
-        unique: true
+        unique: false
       },
       address: {
         type: Sequelize.STRING

@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     user_id:{type:DataTypes.INTEGER,
 	autoIncrement: true,
       primaryKey: true},
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING
+    Name: DataTypes.STRING,
+    AdharNo: DataTypes.BIGINT
   }, {timestamps: false});
   User.associate = function(models) {
     // associations can be defined here
