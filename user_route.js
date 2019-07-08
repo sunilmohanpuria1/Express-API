@@ -81,7 +81,7 @@ router.put('/:contact_id', (req, res) => {
             if (temp !== null) {
                 temp.update({ contactNo: req.body.contactNo ,address:req.body.address})
                     .then((data) => {
-                        res.send(data);
+                        res.send("contact updated");
                     })
                     .catch(function (err) {
                         //res.sendStatus(403);
